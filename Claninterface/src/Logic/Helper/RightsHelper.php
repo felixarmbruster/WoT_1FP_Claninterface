@@ -17,7 +17,7 @@ class RightsHelper
      */
     public function __construct($user)
     {
-       $this->PermissionLevel = $this->findPermissionLefel($user);
+       $this->PermissionLevel = $this->findPermissionLevel($user);
     }
 
     /**
@@ -25,7 +25,7 @@ class RightsHelper
      * @param int $user ID des Nutzeraccounts
      * @return int Berechtigungslevel
      */
-    public function findPermissionLefel($user){
+    public function findPermissionLevel($user){
 
         if($user == null){
             return -1;

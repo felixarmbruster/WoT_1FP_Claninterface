@@ -26,12 +26,9 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Players'],
-        ];
-        $users = $this->paginate($this->Users);
+       $this->set("users", $this->Users->find("all")->where(["email LIKE"=> "%@%"]));
+       $this->set("wgAccounts", $this->Users->find("all")->where(["email NOT LIKE"=> "%@%"]));
 
-        $this->set(compact('users'));
     }
 
     /**
@@ -203,40 +200,82 @@ class UsersController extends AppController
         }
         $this->set(compact('user'));
     }
+    public function toggleAdmin($id){
+        $this->request->allowMethod(['post', 'delete']);
+        $accounts = $this->Users->find("all")->where(["id" => $id, "email LIKE"=> "%@%"]);
+        if ($accounts->count() >= 1) {
+            $account = $accounts->first();
+            $account->admin = ($account->admin >= 1)?0:1;
+            $this->Users->save($account);
+
+            $this->Flash->success(__("Adminstatus toggled"));
+
+        }else{
+            $this->Flash->error(__("Could not find User"));
+        }
+        $this->redirect($this->referer());
+    }
+
+    public function adminPwReset($id){
+        $this->request->allowMethod(['post', 'delete']);
+        $accounts = $this->Users->find("all")->where(["id" => $id, "email LIKE"=> "%@%"]);
+        if ($accounts->count() >= 1) {
+            $account = $accounts->first();
+            /**
+             * @var User $account
+             */
+            if($this->pwResetMail($account)){
+                $this->Flash->success("Der Nutzer hat ein neues Passwort erhalten");
+            }
+        }else {
+            $this->Flash->error("Kein zurücksetzbares Konto gefunden");
+        }
+        $this->redirect($this->referer());
+
+    }
 
     public function unlock()
     {
         $user = $this->Users->newEntity();
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $accounts = $this->Users->find("all")->where(["email" => $this->request->getData("email")]);
+            $accounts = $this->Users->find("all")->where(["email" => $this->request->getData("email"), "email LIKE"=> "%@%"]);
             if ($accounts->count() >= 1) {
                 /**
                  * @var User $account
                  */
                 $account = $accounts->first();
-                $newPassword = StringHelper::generateRandomString();
-                $account->password = $newPassword;
-                $this->Users->save($account);
-
-                $title = "WoT-Claninterface Passwort vergessen";
-                $email = new Email();
-                $email->setEmailFormat('html');
-                $email->viewBuilder()->setLayout('claninterface');
-                $email->viewBuilder()->setTemplate('passwortReset');
-                $email->setSubject($title);
-                $email->setViewVars(['title' => $title]);
-                $email->setViewVars(['newPassword' => $newPassword]);
-                $email->setViewVars(['user' => $account]);
-                $email->setTo($account->email, $account->name);
-                if (!$email->send()) {
-                    $this->Flash->error("Wir konnten keine E-Mail versenden.");
-                }
-
+                $this->pwResetMail($account);
             }
             $this->Flash->success("Wir haben Ihnen Ihr  neues Kennwort zugestellt");
 
         }
         $this->set("user", $user);
+    }
+
+    /**
+     * @param User $account
+     * @return bool
+     */
+    private function pwResetMail(User $account){
+        $newPassword = StringHelper::generateRandomString();
+        $account->password = $newPassword;
+        $this->Users->save($account);
+
+        $title = "WoT-Claninterface Passwort vergessen";
+        $email = new Email();
+        $email->setEmailFormat('html');
+        $email->viewBuilder()->setLayout('claninterface');
+        $email->viewBuilder()->setTemplate('passwortReset');
+        $email->setSubject($title);
+        $email->setViewVars(['title' => $title]);
+        $email->setViewVars(['newPassword' => $newPassword]);
+        $email->setViewVars(['user' => $account]);
+        $email->setTo($account->email, $account->name);
+        if (!$email->send()) {
+            $this->Flash->error("Wir konnten keine E-Mail versenden.");
+            return false;
+        }
+        return true;
     }
 
     public function isAuthorized($user)
