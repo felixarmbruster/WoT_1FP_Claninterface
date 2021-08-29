@@ -34,7 +34,13 @@ class RightsHelper
         $UsersTable = TableRegistry::getTableLocator()->get('Users');
         $users = $UsersTable->find("all")->where(['id'=> $user, 'admin >='=> 1]);
         if($users->count()){
-            return  10;
+            /**
+             * @var User $acc
+             */
+            $acc = $users->first();
+            if(filter_var($acc->email, FILTER_VALIDATE_EMAIL)) {
+                return 10;
+            }
         }
 
         $TokensTables = TableRegistry::getTableLocator()->get('Tokens');

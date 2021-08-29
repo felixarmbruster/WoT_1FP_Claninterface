@@ -9,14 +9,8 @@ use App\Model\Entity\User;
 use App\View\AppView;
 
 ?>
-
-<ul class="side-nav">
-    <li class="heading"><?= __('Actions') ?></li>
-    <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-    <li><?= $this->Html->link(__('List Players'), ['controller' => 'Players', 'action' => 'index']) ?></li>
-    <li><?= $this->Html->link(__('New Player'), ['controller' => 'Players', 'action' => 'add']) ?></li>
-</ul>
-<h1> Benutzer verwaltung</h1>
+<h1> Benutzerverwaltung</h1>
+<?= $this->Html->link(__('<i class="fas fa-user-plus"></i> Neuen Benutzer anlegen'), ['action' => 'add'],["escape" => false, 'class'=> "btn btn-success btn-sm"]) ?>
 <div class="users index large-9 medium-8 columns content">
     <h3>Benutzer</h3>
     <table class="table table-sm  DataTable table-striped ">
@@ -42,6 +36,7 @@ use App\View\AppView;
                 <td><?= h($user->created->format("d.m.Y")) ?></td>
                 <td><?= h($user->modified->format("d.m.Y")) ?></td>
                 <td class="actions">
+                    <?= $this->Html->link("<i class='fas fa-eye'></i>",['action' => 'view', $user->id],["escape"=>false, "class"=>"btn btn-info btn-sm"]) ?>
                     <?= $this->Form->postLink("<i class='fas fa-key'></i>", ['action' => 'adminPwReset', $user->id], ['confirm' => __('Neues Passwort an {0} senden?', $user->email), "escape" => false, "class" => "btn btn-primary btn-sm"]) ?>
                     <?= $this->Form->postLink("<i class='fas fa-crown'></i>", ['action' => 'toggleAdmin', $user->id], ['confirm' => __('Toggle admin status?', $user->id), "escape" => false, "class" => "btn btn-sm " . ($user->admin ? "btn-secondary" : "btn-warning")]) ?>
                     <?= $this->Form->postLink("<i class='fas fa-trash'></i>", ['action' => 'delete', $user->id], ['confirm' => __('Konto mit folgender Email löschen? {0}', $user->email), "escape" => false, "class" => "btn btn-danger btn-sm"]) ?>
@@ -77,6 +72,7 @@ use App\View\AppView;
                 <td><?= h($user->created->format("d.m.Y")) ?></td>
                 <td><?= h($user->modified->format("d.m.Y")) ?></td>
                 <td class="actions">
+                    <?= $this->Html->link("<i class='fas fa-eye'></i>",['action' => 'view', $user->id],["escape"=>false, "class"=>"btn btn-info btn-sm"]) ?>
                     <?= $this->Form->postLink("<i class='fas fa-trash'></i>", ['action' => 'delete', $user->id], ['confirm' => __('Konto mit folgender Email löschen? {0}', $user->email), "escape" => false, "class" => "btn btn-danger btn-sm"]) ?>
                 </td>
             </tr>
