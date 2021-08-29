@@ -16,9 +16,9 @@
                         <?= $auth["name"] ?>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
                         <?= $this->Html->link("Passwort ändern",['controller' => 'Users', 'action' => 'newpass'],["class"=>"dropdown-item"]) ?>
                         <?= $this->Html->link("Abmelden",['controller' => 'Users', 'action' => 'logout'],["class"=>"dropdown-item"]) ?>
+                        <hr />
                         <?= $this->Html->link("Über & Rechtliches und Impressum",['controller' => 'pages',"action" =>"display", "impressum"],["class"=>"dropdown-item"]) ?>
                     </div>
 

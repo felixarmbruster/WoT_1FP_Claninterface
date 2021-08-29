@@ -94,7 +94,7 @@ if(isset($container)){
         <?php endif; ?>
         <?php if ($isAuth == true): ?>
             <?php if ($permissionLevel > 5): ?>
-                <?= $this->element('Nav/admin', []) ?>
+                <?= $this->element('Nav/admin', ["permissionLevel", $permissionLevel ]) ?>
             <?php endif; ?>
             <?php if ($permissionLevel == 5): ?>
                 <?= $this->element('Nav/fk', []) ?>

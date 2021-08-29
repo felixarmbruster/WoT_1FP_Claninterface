@@ -32,6 +32,9 @@
                         <?= $this->Html->link("Mein Konto",['controller' => 'Users', 'action' => 'Dashboard'],["class"=>"dropdown-item"]) ?>
                         <?= $this->Html->link("Passwort ändern",['controller' => 'Users', 'action' => 'newpass'],["class"=>"dropdown-item"]) ?>
                         <?= $this->Html->link("Abmelden",['controller' => 'Users', 'action' => 'logout'],["class"=>"dropdown-item"]) ?>
+                        <hr />
+                        <?= $this->Html->link("Nutzerverwaltung",['controller' => 'Users', 'action' => 'index'],["class"=>"dropdown-item"]) ?>
+                        <hr />
                         <?= $this->Html->link("Über & Rechtliches und Impressum",['controller' => 'pages',"action" =>"display", "impressum"],["class"=>"dropdown-item"]) ?>
                     </div>
                 </li>
