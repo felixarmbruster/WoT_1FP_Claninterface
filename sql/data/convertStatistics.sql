@@ -1,11 +1,25 @@
-/* Erzeugt die die neue Statistik mit von (date) bis (date_b) logik aus vorhandener statistics Tabelle
+/*
+Erzeugt die die neue Statistik mit von (date) bis (date_b) logik aus vorhandener statistics Tabelle
 
    Vorgehen:
-   1. bstatistics anlegen (Struktur von statistics) und date_b einfügen.
-   2. diesen script ausführen
-   3. statistics mit bstatistics überschreiben
-   */
-INSERT INTO wotclan.bstatistics (
+   1. Neue Tabelle anlegen (bstatistics)
+   2. Tabelle anpassen  (erweitern um date_b und Index)
+   3. Daten transformieren
+   4. Tabelle umbenennen in statistics (alt Daten als statistics_old
+
+*/
+
+
+/* NEUE Tabelle anlegen */
+CREATE TABLE bstatistics LIKE statistics;
+
+/* Tabelle anpassen */
+ALTER TABLE bstatistics
+    ADD COLUMN date_b datetime NOT NULL AFTER date,
+    ADD INDEX statistics_date_date_b (date, date_b) USING BTREE;
+
+/* Daten transformieren */
+INSERT INTO bstatistics (
      player_id,
      tank_id,
      date,
@@ -65,3 +79,7 @@ GROUP BY
     hits,
     survived,
     tanking;
+
+/* Tabellen umbenennen */
+RENAME TABLE statistics TO statistics_old;
+RENAME TABLE bstatistics TO statistics;
