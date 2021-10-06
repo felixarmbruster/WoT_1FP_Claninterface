@@ -7,6 +7,7 @@ namespace App\Logic\Helper;
 use App\Logic\Config\StatisticsConfigHelper;
 use App\Logic\Config\WgApi;
 use App\Model\Entity\Player;
+use App\Model\Entity\Statistic;
 use App\Model\Table\PlayersTable;
 use App\Model\Table\RawsTable;
 use App\Model\Table\StatisticsTable;
@@ -36,7 +37,6 @@ class PlayerDataHelper
     {
         /**
          * @var PlayersTable $PlayerTables
-         * @var RawsTable $RawTables
          * @var StatisticsTable $StatisticTables
          */
 
@@ -47,56 +47,18 @@ class PlayerDataHelper
         $counter = 0;
 
         $start = microtime(true);
+
+        $statDate = time() - (24 * 60 * 60);
+
+        if (time() >= strtotime("04:00:00")) {
+            $statDate = time();
+        }
+
         /** @var Player $player */
         foreach ($players as $player) {
             //Download  from  WG-API
             try {
                 $stat = $this->api->get("wot/tanks/stats/", ["account_id" => $player->id, "fields" => StatisticsConfigHelper::$FieldsList]);
-
-                foreach ($stat->{$player->id} as $tankStat) {
-                    $data = array();
-                    foreach (StatisticsConfigHelper::$BattleTypes as $battleType) {
-                        $battleTypeStat = $tankStat->$battleType;
-                        if ($battleTypeStat->battles) {
-
-                            $statDate = time() - (24 * 60 * 60);
-
-                            if (time() >= strtotime("04:00:00")) {
-                                $statDate = time();
-                            }
-
-                            $arr = array(
-                                //basis
-                                "player_id" => $player->id,
-                                "tank_id" => $tankStat->tank_id,
-                                "date" => date("Y-m-d", $statDate),
-                                "battletype" => $battleType,
-
-                                //WN8
-                                "damage" => $battleTypeStat->damage_dealt,
-                                "spotted" => $battleTypeStat->spotted,
-                                "frags" => $battleTypeStat->frags,
-                                "droppedCapturePoints" => $battleTypeStat->dropped_capture_points,
-                                "battle" => $battleTypeStat->battles,
-                                "win" => $battleTypeStat->wins,
-
-                                //erweitert
-                                "shots" => $battleTypeStat->shots,
-                                "hits" => $battleTypeStat->hits,
-                                "xp" => $battleTypeStat->xp,
-                                "survived" => $battleTypeStat->survived_battles,
-                                "tanking" => intval($battleTypeStat->tanking_factor * 100),
-
-                            );
-                            $data [] = $arr;
-                            $counter++;
-                        }
-                    }
-
-                    $statistic = $StatisticTables->newEntities($data);
-                    $StatisticTables->saveMany($statistic, ['checkRules' => false, 'atomic' => false]);
-
-                }
             } catch (\Exception $e) {
                 if($io == null) {
                     echo $e->getMessage();
@@ -104,6 +66,57 @@ class PlayerDataHelper
                     $io->out($e->getMessage());
                 }
             }
+
+                foreach ($stat->{$player->id} as $tankStat) {
+                    foreach (StatisticsConfigHelper::$BattleTypes as $battleType) {
+                        $battleTypeStat = $tankStat->$battleType;
+                        if ($battleTypeStat->battles) {
+
+
+
+                            $stats = $StatisticTables->find("all")->where(
+                                ["player_id" => $player->id,
+                                "tank_id" => $tankStat->tank_id,
+                                "battletype" => $battleType,
+                                "battle" => $battleTypeStat->battles,]);
+
+                            if($stats->count()){
+                                /** @var Statistic $statistic */
+                                $statistic = $stats->first();
+                                $statistic->date_b = $statDate;
+                                $StatisticTables->save($statistic);
+                            }else{
+                                $statistic = $StatisticTables->newEntity(
+                                    [
+                                        "player_id" => $player->id,
+                                        "tank_id" => $tankStat->tank_id,
+                                        "date" => date("Y-m-d", $statDate),
+                                        "date_b" => date("Y-m-d", $statDate),
+                                        "battletype" => $battleType,
+
+                                        //WN8
+                                        "damage" => $battleTypeStat->damage_dealt,
+                                        "spotted" => $battleTypeStat->spotted,
+                                        "frags" => $battleTypeStat->frags,
+                                        "droppedCapturePoints" => $battleTypeStat->dropped_capture_points,
+                                        "battle" => $battleTypeStat->battles,
+                                        "win" => $battleTypeStat->wins,
+
+                                        //erweitert
+                                        "shots" => $battleTypeStat->shots,
+                                        "hits" => $battleTypeStat->hits,
+                                        "xp" => $battleTypeStat->xp,
+                                        "survived" => $battleTypeStat->survived_battles,
+                                        "tanking" => intval($battleTypeStat->tanking_factor * 100),
+                                    ]
+                                );
+                                $StatisticTables->save($statistic);
+                            }
+                            $counter++;
+                        }
+                    }
+                }
+
         }
 
         $time_elapsed_secs = microtime(true) - $start;

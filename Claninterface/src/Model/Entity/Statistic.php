@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $player_id
  * @property int $tank_id
  * @property \Cake\I18n\FrozenDate $date
+ * @property \Cake\I18n\FrozenDate $date_b
  * @property string $battletype
  * @property int $damage
  * @property int $spotted
@@ -43,6 +44,7 @@ class Statistic extends Entity
         'player_id' => true,
         'tank_id' => true,
         'date' => true,
+        'date_b' => true,
         'battletype' => true,
         'damage' => true,
         'spotted' => true,

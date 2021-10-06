@@ -43,11 +43,11 @@ class PlayersController extends AppController
             'contain' => ['Clans', 'Ranks', "Meetingparticipants", "Meetingparticipants.Meetings"],
         ]);
 
-        $newestData = $this->Players->Statistics->find("all")->orderDesc("date")->first();
-        $newestData = $newestData->date;
+        $newestData = $this->Players->Statistics->find("all")->orderDesc("date_b")->first();
+        $newestData = $newestData->date_b;
 
         $stats = $this->Players->Statistics->find("all")->contain(["Players", "Players.Clans", "Tanks", "Tanks.Tanktypes"]);
-        $stats->where(["battletype" => "$battletype", "date" => $newestData, "player_id" => $id]);
+        $stats->where(["battletype" => "$battletype", "date_b" => $newestData, "player_id" => $id]);
         $this->set('stats', $stats);
         $this->set('player', $player);
         $this->set("battletype",$battletype);
