@@ -83,7 +83,7 @@ class PlayerDataHelper
                             if($stats->count()){
                                 /** @var Statistic $statistic */
                                 $statistic = $stats->first();
-                                $statistic->date_b = $statDate;
+                                $statistic->date_b = date("Y-m-d", $statDate);
                                 $StatisticTables->save($statistic);
                             }else{
                                 $statistic = $StatisticTables->newEntity(
