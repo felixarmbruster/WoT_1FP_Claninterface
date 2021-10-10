@@ -110,6 +110,7 @@ class PlayerDataHelper
                                         "tanking" => intval($battleTypeStat->tanking_factor * 100),
                                     ]
                                 );
+                                $statistic->date_b = date("Y-m-d", $statDate);
                                 $StatisticTables->save($statistic);
                             }
                             $counter++;
