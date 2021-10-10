@@ -63,6 +63,10 @@ class StatisticsTable extends Table
             ->date('date')
             ->requirePresence('date', 'create')
             ->notEmptyDate('date');
+        $validator
+            ->date('date_b')
+            ->requirePresence('date_b', 'create')
+            ->notEmptyDate('date_b');
 
         $validator
             ->scalar('battletype')
