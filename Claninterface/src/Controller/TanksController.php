@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Logic\Config\StatisticsConfigHelper;
 use App\Logic\Helper\TankDataHelper;
+use App\Model\Entity\Statistic;
 
 /**
  * Tanks Controller
@@ -43,11 +44,12 @@ class TanksController extends AppController
             'contain' => ['Tanktypes'],
         ]);
 
-        $newestData = $this->Tanks->Statistics->find("all")->orderDesc("date")->first();
-        $newestData = $newestData->date;
+        /** @var Statistic $newestData */
+        $newestData = $this->Tanks->Statistics->find("all")->orderDesc("date_b")->first();
+        $newestData = $newestData->date_b;
 
         $stats = $this->Tanks->Statistics->find("all")->contain(["Players","Players.Clans","Tanks"])->innerJoinWith("Players.Clans");
-        $stats->where(["battletype"=>$battletype,"date"=>$newestData, "tank_id"=>$id]);
+        $stats->where(["battletype"=>$battletype,"date_b"=>$newestData, "tank_id"=>$id]);
 
 
         $this->set('stats', $stats);

@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Clan $clan
  */
+
+use App\Logic\Helper\WN8Helper;
+
 ?>
 <?= $this->Html->link(__('<i class="bi bi-chevron-left"></i> zurück'), ['action' => 'index'], ["class" => "btn btn-sm btn-dark", "escape"=>false]) ?>
 <br/>
@@ -27,6 +30,7 @@
                     <th><?= __('Beigetreten') ?></th>
                     <th><?= __('Letztes Gefecht') ?></th>
                     <th><?= __('Gefechte') ?></th>
+                    <th><?= __('WN8') ?></th>
                     <th><?= __('Ansehen') ?></th>
                 </tr>
                 </thead>
@@ -39,6 +43,9 @@
 
                         <td data-order="<?= $players->lastBattle->format("U") ?>"><?= h($players->lastBattle->format("d.m.Y H:i")) ?></td>
                         <td data-order="<?= $players->battle ?>"><?= $this->Number->format($players->battle,["locale"=> "de_DE"]); ?></td>
+                        <td data-order="<?= round($players->wn8) ?>" class="<?= WN8Helper::WnColor($players->wn8) ?>"><?= $this->Number->format($players->wn8, ["locale" => 'de_DE', "precision" => 2]); ?></td>
+
+
                         <td class="actions">
                             <?= $this->Html->link(__('Ansehen'), ['controller' => 'Players', 'action' => 'view', $players->id]) ?>
                             </td>

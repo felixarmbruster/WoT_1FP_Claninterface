@@ -113,6 +113,8 @@ class PlayersTable extends Table
             ->integer('battle')
             ->notEmptyString('battle');
 
+        $validator->decimal("wn8",2);
+
         return $validator;
     }
 
