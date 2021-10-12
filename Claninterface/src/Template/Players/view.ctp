@@ -12,9 +12,6 @@ use App\Logic\Helper\StringHelper;
 use App\Logic\Helper\WN8Helper;
 use App\Model\Entity\Meetingparticipant;
 
-$wn8 = 0;
-$battles = 0;
-
 $tier_battles = array();
 $tier_wn = array();
 $types_battles = array();
@@ -22,9 +19,6 @@ $types_wn = array();
 
 foreach ($stats as $stat) {
     $tank_wn8 = WN8Helper::calcWN8($stat, $stat->tank) * $stat->battle;
-    $wn8 += $tank_wn8;
-    $battles += $stat->battle;
-
 
     if(!isset($tier_wn [$stat->tank['tier']])){
         $tier_battles [$stat->tank['tier']] =0;
@@ -56,9 +50,6 @@ $label_tier = "";
 foreach ($tier_battles as $k => $v) {
     $label_tier .= "'".StringHelper::numberToRomanRepresentation($k)."',";
 }
-$wn8 = $wn8 / $battles;
-
-
 ?>
 
 <?php if ($permissionLevel >= 5): ?>
@@ -83,7 +74,7 @@ $wn8 = $wn8 / $battles;
         </tr>
         <tr>
             <th scope="row"><?= __('WN8') ?></th>
-            <td class="<?= WN8Helper::WnColor($wn8) ?>"><?= $this->Number->format($wn8, ["locale" => 'de_DE', "precision" => 2]); ?></td>
+            <td class="<?= WN8Helper::WnColor($player->wn8) ?>"><?= $this->Number->format($player->wn8, ["locale" => 'de_DE', "precision" => 2]); ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('WG-ID') ?></th>

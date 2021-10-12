@@ -145,6 +145,8 @@ class WarGamingHelper
                 $player->lastBattle = $this->getLastBattle($member->account_id);
                 $player->battle = $this->getBattleCount($member->account_id);
 
+                $player->wn8 = WN8Helper::getPlayerWN8($member->account_id);
+
                 $saved = $PlayersTable->save($player);
                 $anz++;
             }

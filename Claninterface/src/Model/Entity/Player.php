@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $joined
  * @property \Cake\I18n\FrozenTime $lastBattle
  * @property int $battle
+ * @property double $wn8
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -43,6 +44,7 @@ class Player extends Entity
         'joined' => true,
         'lastBattle' => true,
         'battle' => true,
+        'wn8' => true,
         'created' => true,
         'modified' => true,
         'clan' => true,
