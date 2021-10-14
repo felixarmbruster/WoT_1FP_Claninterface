@@ -1,7 +1,11 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Player;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\HasMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,25 +15,26 @@ use PhpParser\Node\Stmt\HaltCompiler;
 /**
  * Players Model
  *
- * @property \App\Model\Table\ClansTable&\Cake\ORM\Association\BelongsTo $Clans
- * @property \App\Model\Table\RanksTable&\Cake\ORM\Association\BelongsTo $Ranks
- * @property \App\Model\Table\InactivesTable&\Cake\ORM\Association\HasMany $Inactives
- * @property \App\Model\Table\StatisticsTable&\Cake\ORM\Association\HasMany $Statistics
- * @property \App\Model\Table\TeamspeaksTable&\Cake\ORM\Association\HasMany $Teamspeaks
- * @property \App\Model\Table\TokensTable&\Cake\ORM\Association\HasMany $Tokens
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\HasMany $Users
+ * @property ClansTable&BelongsTo $Clans
+ * @property RanksTable&BelongsTo $Ranks
+ * @property InactivesTable&HasMany $Inactives
+ * @property StatisticsTable&HasMany $Statistics
+ * @property TeamspeaksTable&HasMany $Teamspeaks
+ * @property TokensTable&HasMany $Tokens
+ * @property UsersTable&HasMany $Users
  * @property MeetingparticipantsTable&HasMany $Meetingparticipants
+ * @property MeetingregistrationsTable&HasMany $Meetingregistrations
  *
- * @method \App\Model\Entity\Player get($primaryKey, $options = [])
- * @method \App\Model\Entity\Player newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Player[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Player|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Player saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Player patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Player[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Player findOrCreate($search, callable $callback = null, $options = [])
+ * @method Player get($primaryKey, $options = [])
+ * @method Player newEntity($data = null, array $options = [])
+ * @method Player[] newEntities(array $data, array $options = [])
+ * @method Player|false save(EntityInterface $entity, $options = [])
+ * @method Player saveOrFail(EntityInterface $entity, $options = [])
+ * @method Player patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Player[] patchEntities($entities, array $data, array $options = [])
+ * @method Player findOrCreate($search, callable $callback = null, $options = [])
  *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin TimestampBehavior
  */
 class PlayersTable extends Table
 {
@@ -79,13 +84,17 @@ class PlayersTable extends Table
             'foreignKey' => 'player_id',
             'cascadeCallbacks' => true,
         ]);
+        $this->hasMany('Meetingregistrations', [
+            'foreignKey' => 'player_id',
+            'cascadeCallbacks' => true,
+        ]);
     }
 
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator Validator instance.
+     * @return Validator the Validator
      */
     public function validationDefault(Validator $validator)
     {
@@ -122,8 +131,8 @@ class PlayersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {

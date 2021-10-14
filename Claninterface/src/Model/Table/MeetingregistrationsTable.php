@@ -63,7 +63,7 @@ class MeetingregistrationsTable extends Table
 
         $validator
             ->integer('status')
-            ->allowEmptyString('status');
+            ->notEmptyString('status');
 
         return $validator;
     }

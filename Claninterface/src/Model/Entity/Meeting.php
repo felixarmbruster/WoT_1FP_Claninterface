@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -8,16 +10,17 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property \Cake\I18n\FrozenDate $date
- * @property \Cake\I18n\FrozenTime $start
- * @property \Cake\I18n\FrozenTime $end
+ * @property FrozenDate $date
+ * @property FrozenTime $start
+ * @property FrozenTime $end
  * @property int $cloned
- * @property \Cake\I18n\FrozenTime $modified
- * @property \Cake\I18n\FrozenTime $created
+ * @property FrozenTime $modified
+ * @property FrozenTime $created
  * @property int $clan_id
  *
- * @property \App\Model\Entity\Clan $clan
- * @property \App\Model\Entity\Meetingparticipant[] $meetingparticipants
+ * @property Clan $clan
+ * @property Meetingparticipant[] $meetingparticipants
+ * @property Meetingregistration[] $meetingregistration
  */
 class Meeting extends Entity
 {
@@ -41,5 +44,6 @@ class Meeting extends Entity
         'clan_id' => true,
         'clan' => true,
         'meetingparticipants' => true,
+        'meetingregistration' => true,
     ];
 }

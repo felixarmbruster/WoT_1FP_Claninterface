@@ -1,6 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Meeting;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\HasMany;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -9,17 +13,18 @@ use Cake\Validation\Validator;
 /**
  * Meetings Model
  *
- * @property \App\Model\Table\ClansTable&\Cake\ORM\Association\BelongsTo $Clans
- * @property \App\Model\Table\MeetingparticipantsTable&\Cake\ORM\Association\HasMany $Meetingparticipants
+ * @property ClansTable&BelongsTo $Clans
+ * @property MeetingparticipantsTable&HasMany $Meetingparticipants
+ * @property MeetingregistrationsTable&HasMany $Meetingregistrations
  *
- * @method \App\Model\Entity\Meeting get($primaryKey, $options = [])
- * @method \App\Model\Entity\Meeting newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Meeting[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Meeting|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Meeting saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Meeting patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Meeting[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Meeting findOrCreate($search, callable $callback = null, $options = [])
+ * @method Meeting get($primaryKey, $options = [])
+ * @method Meeting newEntity($data = null, array $options = [])
+ * @method Meeting[] newEntities(array $data, array $options = [])
+ * @method Meeting|false save(EntityInterface $entity, $options = [])
+ * @method Meeting saveOrFail(EntityInterface $entity, $options = [])
+ * @method Meeting patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Meeting[] patchEntities($entities, array $data, array $options = [])
+ * @method Meeting findOrCreate($search, callable $callback = null, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -47,6 +52,11 @@ class MeetingsTable extends Table
         ]);
         $this->hasMany('Meetingparticipants', [
             'foreignKey' => 'meeting_id',
+            'cascadeCallbacks' => true,
+        ]);
+        $this->hasMany('Meetingregistrations', [
+            'foreignKey' => 'player_id',
+            'cascadeCallbacks' => true,
         ]);
     }
 

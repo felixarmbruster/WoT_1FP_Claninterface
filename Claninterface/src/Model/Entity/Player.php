@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -10,21 +11,22 @@ use Cake\ORM\Entity;
  * @property string $nick
  * @property int|null $clan_id
  * @property int|null $rank_id
- * @property \Cake\I18n\FrozenTime $joined
- * @property \Cake\I18n\FrozenTime $lastBattle
+ * @property FrozenTime $joined
+ * @property FrozenTime $lastBattle
  * @property int $battle
  * @property double $wn8
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property FrozenTime $created
+ * @property FrozenTime $modified
  *
- * @property \App\Model\Entity\Clan $clan
- * @property \App\Model\Entity\Rank $rank
- * @property \App\Model\Entity\Inactive[] $inactives
- * @property \App\Model\Entity\Statistic[] $statistics
- * @property \App\Model\Entity\Teamspeak[] $teamspeaks
- * @property \App\Model\Entity\Token[] $tokens
- * @property \App\Model\Entity\User[] $users
- * @property Meetingparticipant[] $eetingparticipants
+ * @property Clan $clan
+ * @property Rank $rank
+ * @property Inactive[] $inactives
+ * @property Statistic[] $statistics
+ * @property Teamspeak[] $teamspeaks
+ * @property Token[] $tokens
+ * @property User[] $users
+ * @property Meetingparticipant[] $meetingparticipants
+ * @property Meetingregistration[] $meetingregistration
  */
 class Player extends Entity
 {
@@ -55,5 +57,6 @@ class Player extends Entity
         'tokens' => true,
         'users' => true,
         'meetingparticipants' => true,
+        'meetingregistration' => true,
     ];
 }
