@@ -37,7 +37,7 @@ $group = [
     </thead>
     <tbody>
     <?php foreach ($regs_clan as $reg):
-        $group['clan'][RanksHelper::rankId2Pos($reg->player->rank_id)] += $reg->status == 1 ? 1 : $reg->status == 2? 0.5: 0 ; ?>
+        $group['clan'][RanksHelper::rankId2Pos($reg->player->rank_id)] += $reg->status == 1 ? 1 :  0 ; ?>
         <tr>
             <td><?= $reg->player->clan->short ?></td>
             <td><?= $reg->player->nick ?></td>
@@ -46,7 +46,7 @@ $group = [
         </tr>
     <?php endforeach; ?>
     <?php foreach ($regs_group as $reg):
-        $group['group'][RanksHelper::rankId2Pos($reg->player->rank_id)] += $reg->status == 1 ? 1 : $reg->status == 2? 0.5: 0 ;?>
+        $group['group'][RanksHelper::rankId2Pos($reg->player->rank_id)] += $reg->status == 1 ? 1 :  0 ;?>
         <tr>
             <td><?= $reg->player->clan->short ?></td>
             <td><?= $reg->player->nick ?></td>
