@@ -19,6 +19,10 @@
     <tr><th>Wiederholung</th><td><?= $meeting->cloned ?"Wird zum ".$meeting->date->addDay(7)->format("d.m.Y")." wiederholt":"Wird nicht wiederholt"?>
 </table>
 <br />
+
+
+<?= $this->Html->link('<i class="fas fa-list"></i> Voranmeldungen einsehen', ['action' => 'registrations', $meeting->id],['class'=> 'btn btn-dark btn-sm', "escape"=>false]) ?>
+
 <h4>Teilnehmer</h4>
 <table class="table DataTable">
     <thead>
