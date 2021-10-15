@@ -106,7 +106,7 @@ Wir verwenden das Wargaming-OpenID verfahren, bei diesem Bestätigt Wargaming, d
         <?php foreach ($registrations as $registration): ?>
             <tr>
                 <td><?= $registration["player"]->nick ?></td>
-                <td><?= $registration["meeting"]->name ?></td>
+                <td><?= $registration["meeting"]->name ?> <small>[<?= $registration["meeting"]->clan->short ?>]</small></td>
                 <td><?= $registration["meeting"]->date->format("d.m.Y")?> <?= $registration["meeting"]->start->format("H:i")?> - <?= $registration["meeting"]->end->format("H:i")?> </td>
                 <td><span class="badge bg-<?= MeetingRegistrationHelper::$status[$registration["status"]]["class"] ?>"><?= MeetingRegistrationHelper::$status[$registration["status"]]["icon"] ?> <?= MeetingRegistrationHelper::$status[$registration["status"]]["display"] ?></span></td>
                 <td>
