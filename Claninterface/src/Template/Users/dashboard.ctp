@@ -4,8 +4,10 @@
  * @var bool $UserIsAdmin
  * @var Player[] $Players
  * @var int $permissionLevel
+ * @var array $registrations
  */
 
+use App\Logic\Helper\MeetingRegistrationHelper;
 use App\Model\Entity\Player;
 use Cake\Core\Configure;
 
@@ -89,8 +91,46 @@ Wir verwenden das Wargaming-OpenID verfahren, bei diesem Bestätigt Wargaming, d
             </div>
         <?php endforeach; ?>
     </div>
-
 <?php } ?>
+<?php if (!empty($registrations)): ?>
+    <br />
+    <h3>An Events teilnehmen</h3>
+    Bitte teile uns mit an welchen Events du teilnehmen willst?
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th>Account</th><th>Event</th><th>Zeitraum</th><th>Teilnahme?</th><th>Nimmst du Teil?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($registrations as $registration): ?>
+            <tr>
+                <td><?= $registration["player"]->nick ?></td>
+                <td><?= $registration["meeting"]->name ?></td>
+                <td><?= $registration["meeting"]->date->format("d.m.Y")?> <?= $registration["meeting"]->start->format("H:i")?> - <?= $registration["meeting"]->end->format("H:i")?> </td>
+                <td><span class="badge bg-<?= MeetingRegistrationHelper::$status[$registration["status"]]["class"] ?>"><?= MeetingRegistrationHelper::$status[$registration["status"]]["icon"] ?> <?= MeetingRegistrationHelper::$status[$registration["status"]]["display"] ?></span></td>
+                <td>
+                    <?php foreach (MeetingRegistrationHelper::$status as $key => $status):
+                        if($status["isButton"]):
+                        ?>
+
+                        <?= $this->Form->postLink(
+                            $status["icon"]." ".$status["button"],
+                            ["controller" =>"Meetingregistrations", "action" => "setRegistrations", $registration["player"]->id, $registration["meeting"]->id, $key],
+                            ["class"=> "btn btn-{$status["class"]}", "escape" => false]); ?>
+
+
+                    <?php
+                     endif;
+                     endforeach; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+
 <script>
     $(document).ready(function () {
         $(".toggle-explain").hide();

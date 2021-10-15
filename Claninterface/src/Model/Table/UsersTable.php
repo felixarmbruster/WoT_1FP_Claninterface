@@ -3,6 +3,8 @@ namespace App\Model\Table;
 
 use Cake\Auth\AbstractPasswordHasher;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\HasMany;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -11,8 +13,8 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\PlayersTable&\Cake\ORM\Association\BelongsTo $Players
- * @property &\Cake\ORM\Association\HasMany $Tokens
+ * @property PlayersTable&BelongsTo $Players
+ * @property TokensTable&HasMany $Tokens
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])

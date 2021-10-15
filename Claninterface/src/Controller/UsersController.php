@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Logic\Helper\StringHelper;
 use App\Logic\Helper\WN8Helper;
+use App\Model\Entity\Meeting;
+use App\Model\Entity\Meetingregistration;
+use App\Model\Entity\Player;
 use App\Model\Entity\Tank;
 use App\Model\Entity\User;
 use Cake\Mailer\Email;
@@ -126,7 +129,6 @@ class UsersController extends AppController
             $UserIsAdmin = true;
         }
 
-        $TokensTables = TableRegistry::getTableLocator()->get('Tokens');
         $token = $this->Users->Tokens->find("all")->contain(["players"])->where(['user_id' => $this->Auth->user("id"), 'Players.rank_id <=' => 2]);
         if ($token->count()) {
             $UserIsAdmin = true;
@@ -155,6 +157,34 @@ class UsersController extends AppController
 
         $this->set("Players", $players);
         $this->set("UserIsAdmin", $UserIsAdmin);
+        $register = [];
+        if($players->count()) {
+            /** @var  Player[] $players */
+            $meetings = $this->Users->Players->Meetingparticipants->Meetings->find("all")->where(["date >=" => date("Y-m-d")]);
+            if ($meetings->count()) {
+                /** @var Meeting $meeting */
+                foreach ($meetings as $meeting) {
+                    foreach ($players as $player) {
+                        $data = [];
+                        $data["player"] = $player;
+                        $data["meeting"] = $meeting;
+                        $reg = $this->Users->Players->Meetingregistrations->find("all")->where([
+                            "player_id" => $player->id,
+                            "meeting_id" => $meeting->id,
+                        ]);
+                        $data["status"]  = -1;
+                        if($reg->count()) {
+                            /** @var Meetingregistration $reg */
+                            $reg = $reg->first();
+                            $data["status"] = $reg->status;
+
+                        }
+                        $register [] = $data;
+                    }
+                }
+            }
+        }
+        $this->set("registrations", $register);
     }
 
     public function login()

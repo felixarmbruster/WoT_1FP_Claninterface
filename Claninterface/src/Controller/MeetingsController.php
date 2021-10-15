@@ -23,7 +23,7 @@ class MeetingsController extends AppController
     {
         $this->set('meetings', $this->Meetings->find("all")->contain(["Clans"])->where(["date >=" => date("Y-m-d")]));
         $this->set('oldMeetings', $this->Meetings->find("all")->contain(["Clans"])->where(["date <" => date("Y-m-d")]));
-        MeetingsHelper::findParticipant();
+      //  MeetingsHelper::findParticipant();
 
         $this->set("Clans",$this->Meetings->Clans->find("all")->where(["cron" => 1]));
     }
@@ -148,11 +148,36 @@ class MeetingsController extends AppController
         $this->set("Meetings",$meetings);
         $this->set("container", "container-fluid");
     }
+    public function registrations($meeting_id){
+        $meeting = $this->Meetings->get($meeting_id);
+        $this->set("meeting", $meeting);
+
+        $this->set("regs_clan", $this->Meetings->Meetingregistrations
+            ->find("all")
+            ->contain(["Players", "Players.Ranks", "Players.Clans"])
+            ->innerJoinWith("Players")
+            ->where([
+                "meeting_id" => $meeting_id,
+                "clan_id" => $meeting->clan_id,
+            ]));
+        $this->set("regs_group", $this->Meetings->Meetingregistrations
+            ->find("all")
+            ->contain(["Players", "Players.Ranks", "Players.Clans"])
+            ->innerJoinWith("Players")
+            ->where([
+                "meeting_id" => $meeting_id,
+                "clan_id <>" => $meeting->clan_id
+            ]));
+
+
+
+
+    }
 
     public function isAuthorized($user)
     {
 
-        if ($this->permissionLevel >= 8){
+        if ($this->permissionLevel >= 5){
             return true;
         }
 

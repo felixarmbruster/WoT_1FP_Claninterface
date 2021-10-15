@@ -9,6 +9,14 @@ use Cake\ORM\TableRegistry;
 
 class RanksHelper
 {
+    public static function  rankId2Pos($id){
+        if($id <= 2){return 1;} // Kommando
+        if($id == 4){return 2;} // Kampfoffi
+        return 3;               // Mitglied
+    }
+
+
+
     public static function string2rank($str){
         /**
          * @var RanksTable $RanksTable

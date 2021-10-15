@@ -51,6 +51,7 @@ use Cake\I18n\Time;
                 <td><?= h($meeting->end->format("H:i")) ?></td>
                 <td><?= $meeting->cloned?"Ja":"Nein" ?></td>
                 <td class="actions">
+                    <?= $this->Html->link('<i class="fas fa-list"></i>', ['action' => 'registrations', $meeting->id],['class'=> 'btn btn-dark btn-sm', "escape"=>false]) ?>
                     <?= $this->Html->link('<i class="bi bi-eye-fill"></i>', ['action' => 'view', $meeting->id],["class"=>"btn btn-primary btn-sm", "escape"=>false]) ?>
                     <?= $this->Html->link('<i class="bi bi-pen"></i>', ['action' => 'edit', $meeting->id],["class"=>"btn btn-warning btn-sm", "escape"=>false]) ?>
                     <?= $this->Form->postLink('<i class="bi bi-trash"></i>',['action' => 'delete', $meeting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meeting->id), "class"=>"btn btn-danger btn-sm", "escape"=>false]); ?>
@@ -96,6 +97,7 @@ use Cake\I18n\Time;
                 <td><?= h($meeting->end->format("H:i")) ?></td>
                 <td><?= $meeting->cloned?"Ja":"Nein" ?></td>
                 <td class="actions">
+                    <?= $this->Html->link('<i class="fas fa-list"></i>', ['action' => 'registrations', $meeting->id],['class'=> 'btn btn-dark btn-sm', "escape"=>false]) ?>
                     <?= $this->Html->link('<i class="bi bi-eye-fill"></i>', ['action' => 'view', $meeting->id],["class"=>"btn btn-primary btn-sm", "escape"=>false]) ?>
                     <?= $this->Html->link('<i class="bi bi-pen"></i>', ['action' => 'edit', $meeting->id],["class"=>"btn btn-warning btn-sm", "escape"=>false]) ?>
                     <?= $this->Form->postLink('<i class="bi bi-trash"></i>',['action' => 'delete', $meeting->id], ['confirm' => __('Are you sure you want to delete # {0}?', $meeting->id), "class"=>"btn btn-danger btn-sm", "escape"=>false]); ?>
