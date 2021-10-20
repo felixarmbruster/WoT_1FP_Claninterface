@@ -66,7 +66,7 @@ Wir verwenden das Wargaming-OpenID verfahren, bei diesem Bestätigt Wargaming, d
     <strong>Anleitung</strong>
     <ol>
         <li>Auf den oberen <?= $this->Html->link("Link", $addAccountUrl) ?> klicken</li>
-        <li>Bei <?= $this->Html->link("Wargaming", "https://eu.wargaming.net/", ["target" => "_blank"]) ?>einloggen
+        <li>Bei <?= $this->Html->link("Wargaming", "https://eu.wargaming.net/", ["target" => "_blank"]) ?> einloggen
         </li>
         <li>Zugriff bestätigen</li>
         <li><b>Wenn weitere Accounts hinzugefügt werden sollen:</b>
