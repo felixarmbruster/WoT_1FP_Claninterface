@@ -160,7 +160,7 @@ class UsersController extends AppController
         $register = [];
         if($players->count()) {
             /** @var  Player[] $players */
-            $meetings = $this->Users->Players->Meetingparticipants->Meetings->find("all")->contain(["Clans"])->where(["date >=" => date("Y-m-d")]);
+            $meetings = $this->Users->Players->Meetingparticipants->Meetings->find("all")->contain(["Clans"])->where(["date >=" => date("Y-m-d")])->orderAsc("date");
             if ($meetings->count()) {
                 /** @var Meeting $meeting */
                 foreach ($meetings as $meeting) {
