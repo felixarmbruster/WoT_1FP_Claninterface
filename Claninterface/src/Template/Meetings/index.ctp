@@ -46,8 +46,8 @@ use Cake\I18n\Time;
                 <td><?= $this->Number->format($meeting->id) ?></td>
                 <th><?= $meeting->clan["short"] ?></th>
                 <td><?= h($meeting->name) ?></td>
-                <td><?= h($meeting->date->format("d.m.Y")) ?></td>
-                <td><?= h($meeting->start->format("H:i")) ?></td>
+                <td data-sort="<?=$meeting->date->format("Ymd")?>"><?= h($meeting->date->format("d.m.Y")) ?></td>
+                <td ><?= h($meeting->start->format("H:i")) ?></td>
                 <td><?= h($meeting->end->format("H:i")) ?></td>
                 <td><?= $meeting->cloned?"Ja":"Nein" ?></td>
                 <td class="actions">
