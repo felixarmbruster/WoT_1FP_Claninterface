@@ -3,8 +3,12 @@
                 <li class="nav-item">
                     <?= $this->Html->link("Clans",['controller' => 'Clans', 'action' => 'index'],["class"=>"nav-link"]) ?>
                 </li>
-                <?= $this->Html->link("Panzer",['controller' => 'Tanks', 'action' => 'index'],["class"=>"nav-link"]) ?>
-
+                <li class="nav-item">
+                    <?= $this->Html->link("Panzer",['controller' => 'Tanks', 'action' => 'index'],["class"=>"nav-link"]) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link("Veranstaltung",['controller' => 'Meetings', 'action' => 'index'],["class"=>"nav-link"]) ?>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                        Mehr

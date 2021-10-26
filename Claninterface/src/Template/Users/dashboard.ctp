@@ -111,13 +111,13 @@ Wir verwenden das Wargaming-OpenID verfahren, bei diesem Bestätigt Wargaming, d
                 <td><span class="badge bg-<?= MeetingRegistrationHelper::$status[$registration["status"]]["class"] ?>"><?= MeetingRegistrationHelper::$status[$registration["status"]]["icon"] ?> <?= MeetingRegistrationHelper::$status[$registration["status"]]["display"] ?></span></td>
                 <td>
                     <?php foreach (MeetingRegistrationHelper::$status as $key => $status):
-                        if($status["isButton"]):
+                            if($status["isButton"]):
                         ?>
 
                         <?= $this->Form->postLink(
                             $status["icon"]." ".$status["button"],
                             ["controller" =>"Meetingregistrations", "action" => "setRegistrations", $registration["player"]->id, $registration["meeting"]->id, $key],
-                            ["class"=> "btn btn-{$status["class"]}", "escape" => false]); ?>
+                            ["class"=> "btn btn-sm btn-{$status["class"]}", "escape" => false]); ?>
 
 
                     <?php
